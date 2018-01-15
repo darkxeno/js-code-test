@@ -1,6 +1,8 @@
 # JS tick-tack-toe
 
-The objective of the test it's to build a functional tick-tack-toe 
+The objective of the test it's to build a functional tick-tack-toe
+
+![](http://www.gifmania.co.uk/Objects-Animated-Gifs/Animated-Toys/Board-Games/Tic-Tac-Toe/Neon-Tic-Tac-Toe-89376.gif)
 
 Sample Game: https://www.google.es/search?q=tick+tack+toe&oq=tick+tack+toe
 
