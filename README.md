@@ -128,7 +128,7 @@ empty BODY
 - The server detect not valid moves correctly (3 points)
 - Functional oriented code [no objects being used] (4 points)
 - Tested code [worthy unit / functional tests] (4 points)
-- The server allows to undo the last move multiple times [use {...payload, nextMove: { undo: true }}] (4 points)
+- The server allows to undo the last move multiple times [use `{...payload, nextMove: { undo: true }}`] (4 points)
 - The UI allows to play a complete match without noticeable problems (5 points)
 - The CPU player should be able to tie or win always (6 points)
 - The server is able to maintain a valid flow of successive boardStates without using any kind of storage [db, file, memory] (6 points)
