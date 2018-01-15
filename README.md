@@ -133,4 +133,4 @@ empty BODY
 - The CPU player should be able to tie or win always (6 points)
 - The server is able to maintain a valid flow of successive boardStates without using any kind of storage [db, file, memory] (6 points)
 
-Total points: 45
+#### Total points: 45
