@@ -119,18 +119,23 @@ empty BODY
 
 ## Scoring
 
+### Mandatory
+
 - The server detects not valid ids (1 points)
 - The server detect not valid payloads (2 points)
 - The CPU player plays correctly (2 points)
 - The server maintains the complete list of past moves on the history (2 points)
 - The UI don't allow wrong moves (2 points)
+- The UI allows to play a complete match without noticeable problems (3 points)
 - Clean and readable code (3 points)
 - The server detect not valid moves correctly (3 points)
-- Functional oriented code [no objects being used] (4 points)
+- Functional oriented code [no stateful objects are being defined] (4 points)
+
+### Select 2 of the next 4
+
 - Tested code [worthy unit / functional tests] (4 points)
 - The server allows to undo the last move multiple times [use `{...payload, nextMove: { undo: true }}`] (4 points)
-- The UI allows to play a complete match without noticeable problems (5 points)
 - The CPU player should be able to tie or win always (6 points)
 - The server is able to maintain a valid flow of successive boardStates without using any kind of storage [db, file, memory] (6 points)
 
-#### Total points: 45
+#### Total points: 30 - 34
