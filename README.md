@@ -1,57 +1,103 @@
-# JS tick-tack-toe
+# Introduction
 
-The objective of the test it's to build a functional tick-tack-toe
+The objective of this test it is to build a functional tic-tac-toe. It is a traditional game where players have to place three marks of the same color in a row.
 
 ![](http://www.gifmania.co.uk/Objects-Animated-Gifs/Animated-Toys/Board-Games/Tic-Tac-Toe/Neon-Tic-Tac-Toe-89376.gif)
 
-Sample Game: https://www.google.es/search?q=tick+tack+toe&oq=tick+tack+toe
+You can play it visiting [this link](https://www.google.com/search?q=tic+tac+toe) of Google results.
 
-## Server Requirements
+More requirements you complete, more points you will get. Evaluation of requirements completion will be executed both automatically and manually.
 
-- Technologies (NodeJS with express, koa or meteor)
+# Backend requeriments
 
-- Build one POST webservice /api/tick-tack-toe/play that receives as input the current status of the game and the next move of the human player:
+Following rules are strictly mandatory for the evaluation of the test:
 
-example of a valid input JSON body:
-```js
+* Technologies: ([Node.js](https://nodejs.org/) with [Express.js](https://expressjs.com/), [Koa](http://koajs.com/) or [Meteor](https://www.meteor.com/))
+
+* Build one POST web service listening to requests on `/api/tick-tack-toe/play` that matches following specification.
+
+## Request body
+
+Public web service should accept body param with a structure similar to this one:
+
+```
 {
-  matchId: "123", //string, identifies the current match, required
-  
-  boardState: [
+  "matchId": "5a5c6f9b4d749d008e07e695", //string, identifies the current match, required
+  "boardState": [
     "x", "-", "-", // first row of the game board, positions 0, 1, 2
     "-", "o", "o", // second row of the game board, positions 3, 4, 5
-    "-", "-", "x"  // third row of the game board, positions 6, 7, 8
+    "-", "-", "x" // third row of the game board, positions 6, 7, 8
   ], // array of chars ( one of ['o','x','-']), required
-  
-  nextMove: {
-    char: "o" // char one of ['o','x'], required
-    position: 1 // number from 0 to 8, required 
+  "nextMove": {
+    "char": "o", // char one of ['o','x'], required
+    "position": 4 // number from 0 to 8, required 
   }, // object, represents the next move of the player, required only on input
-  
-  history: [ { char: "x", position: 0 } ], // array of move objects, optional
-  
-  customField1: // any format, optional for the developer
-  customField2: // any format, optional for the developer
-  customField3: // any format, optional for the developer
-  }
-```
-
-- The server should check if the movement it's valid, if the the payload is wrongly formatted, if the matchId it's valid if any of these conditions fails should respond with and error like these (status code 400):
-```js
-{
-  error: true,
-  message: "Not valid move"
-  // other possible message values
-  // message: "Not valid payload format"
-  // message: "Not valid matchId"
-  // message: "Match has finished"
+  "history": [
+    {
+      "char": "x",
+      "position": 0
+    }
+  ], // array of move objects, optional
+  "customField1": "customValue1", // any format, optional for the developer
+  "customField2": "customValue1", // any format, optional for the developer
+  "customField3": "customValue1" // any format, optional for the developer
 }
 ```
 
-- If the movement it's valid the server calculates the next boardState and applies a valid CPU movement and returns the result maintaining the same JSON scheme as the input payload.
+This is the human specification of the previous payload:
 
-- Any request to the webservice without payload will create / start a new match, when starting a new match the server can act first (doing a CPU move) or not randomly, the CPU char "x" or "o" get assign randomly too. When the CPU don't act first the Player can select any char.
+* `matchId`: Mandatory string that identifies the current match.
+* `boardState`: Array of strings that contain the state of the board. It has a size of 3 x 3 row and each element has one of the following values: `x`, `-` or `o`
+* `nextMove`: Mandatory object that contains information of the next move. It contains two mandatory fields that indicates the type of mark you want to add (valid values: `x` and `o`) and another one that indicates the position where you want to put it.
+* `history`: Mandatory list of previous moves sorted by time (ascendent). The structure of the items it contains is the same than `nextMove` field.
 
+Additionally, you can add three additional fields to store any kind of information you consider relevant for this challenge.
+
+## Response body
+
+Server should return the same structure than request but updated with the move provided by user and another move done by a bot. Field `nextMove` must be set to null because both moves were already applied.
+
+## Business rules
+
+Backend should verify user has not cheated, play his turn and return the updated board.
+
+### Game initialisation
+
+Any request without payload will start a new match. When starting a new match the server can play first or not randomly.
+
+If machine plays first, mark type (`x` or `y`) will be assigned randomly. If user moves first, he can choose mark type.
+
+### Request validation
+
+Server should verify following rules:
+
+* Request payload is a valid JSON.
+* Provided `nextMove` is valid.
+* Provided `matchId` was not modified.
+* Match did not finish.
+
+In case any of those rules are not satisfied, backend should return a message with following structure:
+
+```
+{
+  "error": true,
+  "message": "Error message"
+}
+```
+
+These are the expected error messages (keep them literal for testing):
+* _Not valid payload format_
+* _Not valid move_
+* _Not valid matchId_
+* _Match has finished_
+
+In case you need any other error, just add it and document new error cases in your README file.
+
+### Bot move
+
+If move is valid, server has to calculate new board state adding both human and bot move.
+
+Algorithm for machine moves has to be implemented by you as smart as possible. If you add documentation or diagrams to explain it, it will be appreciated.
 
 ## Frontend Requirements
 
