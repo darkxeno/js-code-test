@@ -93,32 +93,29 @@ These are the expected error messages (keep them literal for testing):
 
 In case you need any other error, just add it and document new error cases in your README file.
 
-### Bot move
+### Bot moves
 
 If move is valid, server has to calculate new board state adding both human and bot move.
 
 Algorithm for machine moves has to be implemented by you as smart as possible. If you add documentation or diagrams to explain it, it will be appreciated.
 
-## Frontend Requirements
+### Game example
 
+This is an example of two moves just to explain with a practical example how backend should work.
 
-- Technologies (React)
-- The user should be able to play a complete match VS the CPU using the webservice defined above.
-- The user should be able to play by clicking on the board
+#### First request
 
-## Example of a correct flow:
+On first request, we send an empty body to backend.
 
-### 1st REQUEST - Game starts and CPU plays first
+```
+{}
+```
 
-#### INPUT
+In this case random start says backend has to play first, so it responds with his first movement after a random choice of mark type.
 
-empty BODY
-
-#### OUTPUT
-
-```js
+```
 {
-  matchId: "1",
+  matchId: "5a5c6f980bc11e007432ca3f",
   boardState: [
     "-", "-", "-",
     "-", "o", "-",
@@ -130,44 +127,51 @@ empty BODY
 }
 ```
 
-### 2nd REQUEST - Human player send a correct move and server responds with corresponding CPU move
+#### Second request
 
-#### INPUT
+Human player thinks about next move and frontend sends his move to backend.
 
-```js
+```
 {
-  matchId: "1",
-  boardState: [
+  "matchId": "5a5c6f980bc11e007432ca3f",
+  "boardState": [
     "-", "-", "-",
     "-", "o", "-",
     "-", "-", "-"
   ],
-  nextMove: { char: "x", position: 0 },
-  history: [ 
-    { char: "o", position: 4 } 
+  "nextMove": { "char": "x", "position": 0 },
+  "history": [
+    { "char": "o", "position": 4 }
   ]
 }
 ```
 
-#### OUTPUT
+Backend receives his move, updates the board and add his own move before it sends the response. As you can see, `nextMove` does not contain data because his move was already added to the board.
 
-```js
+```
 {
-  matchId: "1",
-  boardState: [
+  "matchId": "5a5c6f980bc11e007432ca3f",
+  "boardState": [
     "x", "-", "-",
     "-", "o", "-",
     "-", "-", "-"
   ],
-  history: [ 
-    { char: "o", position: 4 }, { char: "x", position: 0 } 
+  "history": [ 
+    { "char": "o", "position": 4 },
+    { "char": "x", "position": 0 } 
   ]
 }
 ```
 
-## Scoring
+# Frontend Requirements
 
-### Mandatory
+This part has to be made with [React](https://reactjs.org/) and it should allow user to play a complete match versus the CPU using the previous web service and clicking on the board.
+
+More requirements you complete, more points you will get on test evaluation.
+
+# Scoring
+
+## Mandatory
 
 - The server detects not valid ids (1 points)
 - The server detect not valid payloads (2 points)
@@ -179,11 +183,11 @@ empty BODY
 - The server detect not valid moves correctly (3 points)
 - Functional oriented code [no stateful objects are being defined] (4 points)
 
-### Select 2 of the next 4
+## Select 2 of the next 4
 
 - Tested code [worthy unit / functional tests] (4 points)
 - The server allows to undo the last move multiple times [use `{...payload, nextMove: { undo: true }}`] (4 points)
 - The CPU player should be able to tie or win always (6 points)
 - The server is able to maintain a valid flow of successive boardStates without using any kind of storage [db, file, memory] (6 points)
 
-#### Total points: 30 - 34
+## Total points: 30 - 34
