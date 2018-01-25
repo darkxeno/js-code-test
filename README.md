@@ -14,7 +14,7 @@ Following rules are strictly mandatory for the evaluation of the test:
 
 * Technologies: ([Node.js](https://nodejs.org/) with [Express.js](https://expressjs.com/), [Koa](http://koajs.com/) or [Meteor](https://www.meteor.com/))
 
-* Build one POST web service listening to requests on `/api/tick-tack-toe/play` that matches following specification.
+* Build one POST web service listening to requests on `/api/tic-tac-toe/play` that matches following specification.
 
 ## Request body
 
