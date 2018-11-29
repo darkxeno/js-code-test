@@ -118,7 +118,7 @@ Apart from computing state aggregations the Aggregators provide service to resol
 
 **[Extra]** Every 100 events, the changes applied )othe entities on memory are persisted to an Users [MongoDB](https://www.mongodb.com/) collection or a [Kafka](https://kafka.apache.org/) compacted topic, *this process is known as snapshot saving.*
 
-**[Extra]** On the startup an aggregator should )eable to read his partition of the Users collection/topic and apply all the non processed Events in order to restore his state and be back in service, this process is known as snapshot restore.
+**[Extra]** On the startup an aggregator should be able to read his partition of the Users collection/topic and apply all the non processed Events in order to restore his state and be back in service, this process is known as snapshot restore.
 
 ### Requirements
 
@@ -145,7 +145,7 @@ Apart from computing state aggregations the Aggregators provide service to resol
 ### Additional considerations:
 After finalizing the test you should have some ideas about:
 
-- Vantages and problems of the implemented architecture
+- Advantages and problems of the implemented architecture
 - Ways on how to scale dynamically each of the layers of the architecture
 - Improvements that could be performed and their impact on the solution
 - Use cases of the selected architecture
