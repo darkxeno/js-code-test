@@ -29,7 +29,7 @@ Only schema validations are required, you don't need to check each of the fields
 
 Docker - [Docker Compose](https://docs.docker.com/compose/)
 
-Ensure to provide an easy way to test your aolution by using 2 Dockerfiles (Gateway and DB/Aggregator) and a docker-compose.yaml file where to coordinate the startup and default configuration of the processes.
+Ensure to provide an easy way to test your solution by using 2 Dockerfiles (Gateway and DB/Aggregator) and a docker-compose.yaml file where to coordinate the startup and default configuration of the processes.
 
 Solutions should be provided as a link to an open source repository (github, bitbucket or gitlab are the accepted choices). Add a README.md file for additional explanations / documentation.
 
@@ -104,7 +104,7 @@ Hosts the RESTful API and emits events for every CUD operation. Events should be
 
 After emiting the event the Gateway sends an *optimistic response back to the API client.*
 
-**[Extra]** When an Aggregator is down the Gatew)ycan relay on Users collection / topic to support READ request directed to his specific partition of the Users.
+**[Extra]** When an Aggregator is down the Gateway can rely on Users collection / topic to support READ request directed to his specific partition of the Users.
 
 
 ### Aggregator processes 
