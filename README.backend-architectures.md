@@ -8,10 +8,12 @@ GET /api/user/{userID} 			(READs an user)
 POST /api/user/ 			(CREATEs an user)
 
 PUT /api/user/ 				(UPDATEs an user) 
-//allows partial updates, using a non-complete Entity schema
 
 DELETE /api/user/{userID} 		(DELETEs an user)
 ```
+
+*NOTE:* the API allows partial updates, using a non-complete Entity schema
+
 ### User entity schema
 ```
 {
