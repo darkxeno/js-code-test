@@ -1,96 +1,147 @@
-- Functionality to implement
+# Functionality to implement
 
-Build a CRUD of user on top of a data distributted architecture. The public interface of the system it's a based on a RESTFull Microservices API:
+Build microservices able to provide CRUD (CREATE, READ, UPDATE, DELETE) functionality for the User entity on top of a data distributted architecture. The public interface of the system it's a based on a RESTFul Microservices API conformed by:
 
-GET /api/user/{userID} 			(read an user)
-POST /api/user/ 				(create an user)
-PUT /api/user/ 					(update an user)
-DELETE /api/user/{userID} 		(delete an user)
+```
+GET /api/user/{userID} 			(READs an user)
 
-Packaging / Orchestration engine:
+POST /api/user/ 				(CREATEs an user)
 
-Docker - Docker Compose
+PUT /api/user/ 					(UPDATEs an user) 
+//allows partial updates, using a non-complete Entity schema
+
+DELETE /api/user/{userID} 		(DELETEs an user)
+```
+### User entity schema
+```
+{
+    id: '13AE742', // an UUID string
+    name: 'John Doe',
+    email: 'john.doe@gmail.com',
+    group: 3
+}
+```
+Only schema validations are required, you don't need to check each of the fields.
+
+## Packaging / Orchestration engine
+
+Docker - [Docker Compose](https://docs.docker.com/compose/)
+
+Ensure to provide an easy way to test your aolution by using 2 Dockerfiles (Gateway and DB/Aggregator) and a docker-compose.yaml file where to coordinate the startup and default configuration of the processes.
+
+Solutions should be provided as a link to an open source repository (github, bitbucket or gitlab are the accepted choices). Add a README.md file for additional explanations / documentation.
+
+## Goal architectures: (select and implement one)
+
+- Distributed Database Architecture
+
+- [Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html) + [CQRS Architecture](https://martinfowler.com/bliki/CQRS.html)
 
 
-Goal architectures: (select and implement one)
 
-Distributed Database Architecture
-Event Sourcing + CQRS Architecture
-
-
-
-Distributed Database Architecture (Details)
+## Distributed Database Architecture (Details)
 
 The system it's built using 2 type of nodejs processes:
 
-- Gateway process:					[GW_N: 1 (default number of replicas that need to be running)]
+### Gateway process
+
+(container name: gateway)
+
+**[number of containers GW_N=1 ]**
 
 Hosts the RESTful API and communicates with the DB processes) 	
 
-- DB processes						[DB_N: 3 (default number of replicas that need to be running)]
+### DB processes
 
-Each process stores one or multiple shard/partition of the database inside of a RocksDB table.
+(container names: db-0, db-1, db-2)	
 
-On every request the Gateway needs to communicate with the DB processes in order to obtain and or modify the data stored in one or multiple shards.
+**[number of containers  DB_N=3 ]**
 
-The internal (Gateway <=> DBs) communication protocol it's up to you choice (HTTP, TCP, Websockets, ...), keep in mind the 
+Each process stores one or multiple database shards/partitions of the complete Users data inside of their embeded [RocksDB](https://rocksdb.org/) tables.
 
+On every API request the Gateway needs to communicate with the DB processes in order to obtain and or modify the data stored in one or multiple shards.
 
-- Requirements
+The internal (Gateway <=> DBs) communication protocol it's up to you choice (HTTP, TCP, Websockets, ...), keep in mind the selection of the protocol has a big effect on the complexity / scalability of the implementation.
 
-Liveness checks:
+### Requirements
 
-- The system is able to respond correctly and in less than 250ms to all CRUD requests
+#### Liveness checks:
 
-Safety checks
+- The system is able to respond correctly and in less than 250ms to all basic CRUD requests
 
-- The system is able to support the downtime of 1 DB process without any problem to the service
-- The system is able to recover a failed DB process after a successfull restart
+#### Safety checks:
 
-Performance / Complexity
+- The system is able to support the downtime of 1 DB process without any problem to the READ service
+- The system is able to recover a failed DB process after a successfull restart 
+( test this with docker-compose stop db-1; sleep 60; docker-compose start db-1; )
+
+#### Performance / Complexity
 
 - The cyclomatic complexity of each operation should not increase with DB_N, should be constant K or at least <= ( DB_N / 2 ) + 1 (Quorum size)
 - The DB space complexity should be keep <= 2 times the total size of the data stored
 
-Extra points:
-No extra points available for this architecture
+#### Extra points:
+- Implement a distributed COUNT query (GET /api/user/count) skipping duplicates
+- Implement a distributed LIST query (GET /api/user?offset=100&limit=100) that supports pagination
 
 
 
-Event Sourcing + CQRS Architecture
+### Event Sourcing + CQRS Architecture
 
 The system it's built using 2 type of nodejs processes:
 
-- Gateway processes					[GW_N: 1 (default number of replicas that need to be running)]
+### Gateway process	 
+(container name: gateway)	            
 
-Hosts the RESTful API and emits events for every CUD operation. Event should be inmutable and stored on MongoDB or Kafka (topic/collection: Events). READ operations are forwarded to the corresponding Aggregator process.
+**[number of containers  GW_N=1 ]**
 
-When an Aggregator is down the Gateway can relay MongoDB to support READ request directed to his specific partition of the Users.
+Hosts the RESTful API and emits events for every CUD operation. Events should be inmutable and stored on [MongoDB](https://www.mongodb.com/) or [Kafka](https://kafka.apache.org/) (topic/collection: Events). READ operations are forwarded to the corresponding Aggregator process.
+
+After emiting the event the Gateway sends an optimistic response back to the API client.
+
+**[Extra]** When an Aggregator is down the Gateway can relay on Users collection / topic to support READ request directed to his specific partition of the Users.
 
 
-- Aggregator processes 				[AGG_N: 3 (default number of replicas that need to be running)]
+### Aggregator processes 
+(container names: aggregator-0, ...)	
+
+**[number of containers  AGG_N=3]**
 
 Collect the CUD events and applies the changes to the memory stored representation of the Users entity (the state of the application). 
 
-[Extra] Every 100 events, the changes applied to the entities on memory are persisted to an Users mongodb collection, this process is known as snapshot saving.
+Apart from computing state aggregations the Aggregators provide service to resolve the READ requests received by the Gateway. (use the desired communication protocol HTTP, TCP, websockets, oplog DB communication, [Kafka](https://kafka.apache.org/) messages)
 
-[Extra] On the startup an aggregator should be able to read his partition of the Users collection and apply all the non processed Events in order to be back in service, this process is known as snapshot restore.
+**[Extra]** Every 100 events, the changes applied to the entities on memory are persisted to an Users [MongoDB](https://www.mongodb.com/) collection or a [Kafka](https://kafka.apache.org/) compacted topic, this process is known as snapshot saving.
 
-Apart from computing state aggregations the Aggregators offers a services (using the desired protocol HTTP, TCP, websockets, oplog DB communication, Kafka messages) to respond READ request from the Gateway.
+**[Extra]** On the startup an aggregator should be able to read his partition of the Users collection/topic and apply all the non processed Events in order to restore his state and be back in service, this process is known as snapshot restore.
 
+### Requirements
 
-Safety checks
+#### Safety checks
 
 - The system is able to recover a failed Aggregator process after a successfull restart and Events reprocesing
+- The system do not miss any CUD operation even when all Aggregators are down
 
-Performance / Complexity
+#### Performance / Complexity
 
 - The cyclomatic complexity of each operation should not increase with DB_N, should be constant K or at least <= ( DB_N / 2 ) + 1 (Quorum size)
 - The DB space complexity should be keep equal to the total size of the data stored
 
-Extra points:
+#### Extra points
 - Snapshot saving: Only the modified entities should be persisted every 100 processed Events to the Users collection.
-- Snapshot restore: Aggregators can be back in service just after recovering his state from the MongoDB Users collection (partition)
-- The system is able to support the downtime of multiple aggregators processes without any problem to the service (outdated entities are accepted during downtime, downtime partial inconsistency). Failsafe mechanism.
+- Snapshot restore: Aggregators can be back in service just after recovering his state from the [MongoDB](https://www.mongodb.com/) Users collection (partition)
+- The system is able to support the downtime of multiple aggregators processes without any problem to the service (READ of outdated entities are accepted during downtime, downtime partial inconsistency). Failsafe mechanism.
 
+### General Code Requirements
+- Clean and readable code
+- Functional oriented code [no stateful objects are being used]
+- Reduced call stack depth [max. of 3 nested function calls] 
+
+### Additional considerations:
+After finalizing the test you should have some ideas about:
+
+- Vantages and problems of the implemented architecture
+- Ways on how to scale dynamically each of the layers of the architecture
+- Improvements that could be performed and their impact on the solution
+- Use cases of the selected architecture
 
