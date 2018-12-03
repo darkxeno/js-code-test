@@ -116,7 +116,7 @@ Collect the CUD events and applies the changes to the memory stored representati
 
 Apart from computing state aggregations the Aggregators provide service to resolve the READ requests received by the Gateway. (use the desired communication protocol HTTP, TCP, websockets, oplog DB communication, [Kafka](https://kafka.apache.org/) *messages)*
 
-**[Extra]** Every 100 events, the changes applied )othe entities on memory are persisted to an Users [MongoDB](https://www.mongodb.com/) collection or a [Kafka](https://kafka.apache.org/) compacted topic, *this process is known as snapshot saving.*
+**[Extra]** Every 100 events, the changes applied to the entities on memory are persisted to an Users [MongoDB](https://www.mongodb.com/) collection or a [Kafka](https://kafka.apache.org/) compacted topic, *this process is known as snapshot saving.*
 
 **[Extra]** On the startup an aggregator should be able to read his partition of the Users collection/topic and apply all the non processed Events in order to restore his state and be back in service, this process is known as snapshot restore.
 
