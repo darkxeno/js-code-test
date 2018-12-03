@@ -129,7 +129,7 @@ Apart from computing state aggregations the Aggregators provide service to resol
 
 #### Performance / Complexity
 
-- The cyclomatic complexity of each operation should not increase with DB_N, should be constant K or at least <= ( DB_N / 2 ) + 1 (Quorum size)
+- The cyclomatic complexity of each operation should not increase with AGG_N
 - The DB space complexity should be keep equal to the total size of the data stored
 
 #### Extra points
