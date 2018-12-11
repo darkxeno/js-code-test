@@ -112,7 +112,7 @@ After emiting the event the Gateway sends an *optimistic response back to the AP
 
 *(number of containers  AGG_N=3)*
 
-Collect the CUD events and applies the changes to the memory stored representation of the Users entity (the state of the application). 
+Collect the CUD events (from his assigned partition/s) and applies the changes to the memory stored representation of the Users entity (the state of the application). 
 
 Apart from computing state aggregations the Aggregators provide service to resolve the READ requests received by the Gateway. (use the desired communication protocol HTTP, TCP, websockets, oplog DB communication, [Kafka](https://kafka.apache.org/) *messages)*
 
