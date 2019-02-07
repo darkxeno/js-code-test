@@ -1,4 +1,4 @@
-# Introduction (reduced version)
+# Introduction (frontend version)
 
 The objective of this test it is to build a functional tic-tac-toe. It is a traditional game where players have to place three marks of the same color in a row.
 
