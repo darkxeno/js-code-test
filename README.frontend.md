@@ -6,7 +6,7 @@ The objective of this test it is to build a functional tic-tac-toe. It is a trad
 
 You can play it visiting [this link](https://www.google.com/search?q=tic+tac+toe) of Google results.
 
-More requirements you complete, more points you will get. Evaluation of requirements completion will be executed both automatically and manually.
+More requirements you complete, more points you will get.
 
 # State requirements
 
@@ -36,8 +36,8 @@ Public web service should accept body param with a structure similar to this one
 This is the human specification of the previous payload:
 
 * `matchId`: Mandatory string that identifies the current match.
-* `boardState`: Array or Object of strings that contain the state of the board. It has a size of 3 x 3 row and each element has one of the following values: `x`, `-` or `o`
-* `lastMove`: Mandatory object that contains information of the last move. It contains two mandatory fields that indicates the type of mark you want to add (valid values: `x` and `o`) and another one that indicates the position where you want to put it.
+* `boardState`: Array or Object of strings that contain the state of the board. It should include 3 x 3 elements (row x columns) and each element has one of the following values: `x`, `-` or `o`
+* `lastMove`: Mandatory object that contains information of the last move. It contains two mandatory fields that indicates the type of mark you want to add (valid values: `x` and `o`) and another one that indicates the position where the player played before.
 
 
 Additionally, you can add three additional fields to store any kind of information you consider relevant for this challenge.
@@ -56,11 +56,11 @@ Algorithm for machine moves has to be implemented by you as smart as possible. I
 
 ### Game example
 
-This is an example of two moves just to explain with a practical example how backend should work.
+This is an example of two moves just to explain with a practical example how the game should work.
 
 #### First move
 
-Before the first move, we have an state structure similar to this.
+Before the first move, we have an empty state structure similar to this.
 
 ```
 {
@@ -130,5 +130,6 @@ More requirements you complete, more points you will get on test evaluation.
 - The UI prevents invalid moves (2 points)
 - Functional oriented code (3 points)
 - Proper CSS styling (3 points)
+- Last player move can be undone / reverted (4 points)
 - The CPU player should be able to tie or win always (5 points)
 - Only changed board elements are rendered (6 points)
