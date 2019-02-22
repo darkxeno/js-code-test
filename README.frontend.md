@@ -13,7 +13,7 @@ More requirements you complete, more points you will get.
 
 ## State structure
 
-Public web service should accept body param with a structure similar to this one:
+Redux state structure should similar to this one:
 
 ```
 {
