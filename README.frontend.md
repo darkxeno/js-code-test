@@ -13,7 +13,7 @@ More requirements you complete, more points you will get.
 
 ## State structure
 
-Redux state structure should be similar to this one:
+The state structure should be similar to the next one:
 
 ```
 {
