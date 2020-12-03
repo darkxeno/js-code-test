@@ -151,17 +151,22 @@ Backend receives his move, updates the board and add his own move before it send
 
 This part has to be made with [React](https://reactjs.org/) and it should allow user to play a complete match versus the CPU using the previous web service and clicking on the board.
 
-More requirements you complete, more points you will get on test evaluation.
+Usage of redux or react hooks for the state management are recommended.
+
 
 # Scoring
 
+More requirements you complete, more points you will get on test evaluation.
+
 ## Mandatory
 
-- Clean and readable code (3 points)
-- Minimal call stack deep [max. of 2 nested function calls] (5 points)
+- Clean, readable code and well structured code (6 points)
 - The server is able to maintain simultaneous and correct boards with their correponding and valid gameplays (4 points)
-- Functional oriented code [no stateful objects are being defined] (3 points)
-- The CPU player should be able to tie or win always (6 points)
-- The server is able to maintain a valid flow of successive boardStates without using any kind of storage [db, file, memory] (6 points)
+- Functional oriented code or Clean architecture oriented code (3 points)
 
-## Total points: 27
+## Optional
+- The CPU player should be able to tie or win always (+3 points)
+- The server is able to maintain a valid flow of successive boardStates without using any kind of storage [db, file, memory] (+4 points)
+- Code testing (+5 points)
+
+## Total points: 13 (+12)
