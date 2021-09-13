@@ -125,11 +125,15 @@ More requirements you complete, more points you will get on test evaluation.
 # Scoring
 
 ## Mandatory
-
 - Clean and readable code (3 points)
 - The UI prevents invalid moves (2 points)
 - Functional oriented code (3 points)
 - Proper CSS styling (3 points)
-- Last player move can be undone / reverted (4 points)
+- Code testing (5 points)
+
+## Extra points
+- Usage of typescript to define data structures (3 points)
+- Usage of hooks for state management (4 points)
 - The CPU player should be able to tie or win always (5 points)
+- Last player move can be undone / reverted (4 points)
 - Only changed board elements are rendered (6 points)
